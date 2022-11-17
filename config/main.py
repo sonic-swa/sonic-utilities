@@ -5,7 +5,7 @@ import ipaddress
 import json
 import jsonpatch
 import netaddr
-import netifaces
+# import netifaces
 import os
 import re
 import subprocess
@@ -2962,16 +2962,17 @@ def add_snmp_agent_address(ctx, agentip, port, vrf):
             return False
     found = 0
     ip = ipaddress.ip_address(agentip)
-    for intf in netifaces.interfaces():
-        ipaddresses = netifaces.ifaddresses(intf)
-        if ip_family[ip.version] in ipaddresses:
-            for ipaddr in ipaddresses[ip_family[ip.version]]:
-                if agentip.lower() == ipaddr['addr'].lower():
-                    found = 1
-                    break
-        if found == 1:
-            break
-    else:
+    try:
+        for intf in netifaces.interfaces():
+            ipaddresses = netifaces.ifaddresses(intf)
+            if ip_family[ip.version] in ipaddresses:
+                for ipaddr in ipaddresses[ip_family[ip.version]]:
+                    if agentip.lower() == ipaddr['addr'].lower():
+                        found = 1
+                        break
+            if found == 1:
+                break
+    except:
         click.echo("IP address is not available")
         return
 
