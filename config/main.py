@@ -1660,7 +1660,8 @@ def load_mgmt_config(filename):
     command = "{} -M {} --write-to-db".format(SONIC_CFGGEN_PATH, filename)
     clicommon.run_command(command, display_cmd=True)
     #FIXME: After config DB daemon for hostname and mgmt interface is implemented, we'll no longer need to do manual configuration here
-    config_data = parse_device_desc_xml(filename)
+    # config_data = parse_device_desc_xml(filename)
+    config_data = {}
     hostname = config_data['DEVICE_METADATA']['localhost']['hostname']
     _change_hostname(hostname)
     for key in list(config_data['MGMT_INTERFACE'].keys()):
@@ -1888,8 +1889,8 @@ def override_config_table(db, input_config_db, dry_run):
         validate_config_by_cm(cm, updated_config, "updated_config")
 
     if dry_run:
-        print(json.dumps(updated_config, sort_keys=True,
-                         indent=4, cls=minigraph_encoder))
+        # print(json.dumps(updated_config, sort_keys=True, indent=4, cls=minigraph_encoder))
+        print(json.dumps(updated_config, sort_keys=True, indent=4))
     else:
         override_config_db(config_db, config_input)
 
