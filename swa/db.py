@@ -100,7 +100,7 @@ class DBClient:
         ret_str = ""
         for k, v in data.items():
             status, msg, data = send_redis_command(self.cid, "hset", table+"|"+key, k, v)
-            ret_str += data
+            ret_str += str(data)
         return ret_str
 
     def hmset(self, multiHash):
