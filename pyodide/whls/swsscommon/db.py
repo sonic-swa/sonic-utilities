@@ -83,8 +83,14 @@ class DBClient:
         return data
 
     def delete(self, *args):
-        status, msg, data = send_redis_command(self.cid, "del", args)
-        return data
+        ret_str = ""
+        try:
+            for val in args[1:]:
+                status, msg, data = send_redis_command(self.cid, "del", val)
+                ret_str += str(data)
+        except:
+            pass
+        return ret_str
 
     def scan(self, *args, **kwargs):
         # https://redis.io/commands/scan/
